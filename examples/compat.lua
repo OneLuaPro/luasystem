@@ -22,7 +22,7 @@ if sys.windows then
     sys.setconsoleflags(io.stderr, sys.getconsoleflags(io.stderr) + sys.COF_VIRTUAL_TERMINAL_PROCESSING)
   end
   if sys.isatty(io.stdin) then
-    sys.setconsoleflags(io.stdin, sys.getconsoleflags(io.stdout) + sys.ENABLE_VIRTUAL_TERMINAL_INPUT)
+    sys.setconsoleflags(io.stdin, sys.getconsoleflags(io.stdout) + sys.CIF_VIRTUAL_TERMINAL_INPUT)
   end
 
 

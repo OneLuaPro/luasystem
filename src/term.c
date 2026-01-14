@@ -340,7 +340,7 @@ static HANDLE get_console_handle(lua_State *L, int flags_optional)
     }
 
     LSBF_BITFLAG flags = lsbf_checkbitflags(L, 2);
-    if ((flags & ~valid) != 0) {
+    if ((flags & ~((LSBF_BITFLAG)valid)) != 0) {
         luaL_argerror(L, 2, "invalid flags");
     }
 

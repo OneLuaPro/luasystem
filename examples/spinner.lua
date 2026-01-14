@@ -6,6 +6,26 @@ An example to display a spinner, whilst a long running task executes.
 
 ]]
 
+if sys.windows then
+  -- Windows holds multiple copies of environment variables, to ensure `getenv`
+  -- returns what `setenv` sets we need to use the `system.getenv` instead of
+  -- `os.getenv`.
+  os.getenv = sys.getenv  -- luacheck: ignore
+
+  -- Set console output to UTF-8 encoding.
+  sys.setconsoleoutputcp(sys.CODEPAGE_UTF8)
+
+  -- Set up the terminal to handle ANSI escape sequences on Windows.
+  if sys.isatty(io.stdout) then
+    sys.setconsoleflags(io.stdout, sys.getconsoleflags(io.stdout) + sys.COF_VIRTUAL_TERMINAL_PROCESSING)
+  end
+  if sys.isatty(io.stderr) then
+    sys.setconsoleflags(io.stderr, sys.getconsoleflags(io.stderr) + sys.COF_VIRTUAL_TERMINAL_PROCESSING)
+  end
+  if sys.isatty(io.stdin) then
+    sys.setconsoleflags(io.stdin, sys.getconsoleflags(io.stdout) + sys.CIF_VIRTUAL_TERMINAL_INPUT)
+  end
+end
 
 -- start make backup, to auto-restore on exit
 sys.autotermrestore()

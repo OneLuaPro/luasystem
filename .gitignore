@@ -49,4 +49,5 @@ luac.out
 
 # VS Code files
 .vscode/
-
+*.*~
+build64
