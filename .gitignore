@@ -51,3 +51,6 @@ luac.out
 .vscode/
 *.*~
 build64
+
+# generated/downloaded unicode files
+src/unicode_data/
