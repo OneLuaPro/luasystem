@@ -16,8 +16,15 @@
 #ifdef _WIN32
 # include <windows.h>
 # include <locale.h>
+# include <io.h>
+# include <conio.h>
+# ifndef isatty
+#  define isatty _isatty
+# endif
+# ifndef fileno
+#  define fileno _fileno
+# endif
 # ifndef _MSC_VER
-#  include <conio.h>
 #  include <unistd.h>
 #  include <stddef.h>
 # endif

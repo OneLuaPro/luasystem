@@ -89,10 +89,13 @@ set(INSTALL_TOP_LDIR
 add_library(luasystem SHARED)
 # setup lua include directory
 target_include_directories(luasystem PRIVATE ${LIBLUA_INCLUDEDIR})
+# plattform-independend sources
+target_sources(luasystem PRIVATE
+  src/bitflags.c src/compat.c src/core.c src/term.c src/wcwidth.h
+  src/bitflags.h src/compat.h src/environment.c src/random.c src/time.c src/wcwidth.c
+)
 # setup platform-specific sources, compile and linker options
 if(WIN32 AND NOT MinGW)
-  # Important definitions for DLL and symbol export
-  # add_definitions(-DLUA_BUILD_AS_DLL -DLUA_LIB)
   # set deviating library output name
   set_target_properties(luasystem PROPERTIES PREFIX "")
   set_target_properties(luasystem PROPERTIES OUTPUT_NAME core)
@@ -100,17 +103,11 @@ if(WIN32 AND NOT MinGW)
   target_compile_definitions(luasystem PRIVATE
     _WIN32_WINNT=0x0A00 WINVER=0x0A00
     _WINDLL _WIN32 _CRT_SECURE_NO_WARNINGS)
-  # We silently assume LibreSSL is available with headers and static lib
-  target_link_options(luasystem PRIVATE /LIBPATH:${LIBLUA_LIBDIR} liblua.lib
-    bcrypt.lib winmm.lib)
+  target_link_directories(luasystem PRIVATE ${LIBLUA_LIBDIR})
+  target_link_libraries(luasystem PRIVATE liblua.lib bcrypt.lib winmm.lib)
 else()
   message(FATAL_ERROR "Not yet fully implemented.")
 endif()
-# plattform-independend sources
-target_sources(luasystem PRIVATE
-  src/bitflags.c src/compat.c src/core.c src/term.c src/wcwidth.h
-  src/bitflags.h src/compat.h src/environment.c src/random.c src/time.c src/wcwidth.c
-)
 # Install
 install(TARGETS luasystem RUNTIME DESTINATION ${INSTALL_TOP_CDIR}/system)
 # install lua files to defined locations
