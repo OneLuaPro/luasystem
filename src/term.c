@@ -6,6 +6,7 @@
 // Windows: see https://learn.microsoft.com/en-us/windows/console/console-reference
 // @section terminal
 
+#include <stdio.h>
 #include <lua.h>
 #include <lauxlib.h>
 #include <lualib.h>
@@ -311,15 +312,19 @@ static HANDLE get_console_handle(lua_State *L, int flags_optional)
     HANDLE handle;
     DWORD valid;
     FILE *file = *(FILE **)luaL_checkudata(L, 1, LUA_FILEHANDLE);
-    if (file == stdin && file != NULL) {
+    /* FIX FOR STATIC CRT: Pointer comparison (file == stdout) fails across DLL boundaries.
+       We use _fileno() to compare the underlying file descriptor instead. */
+    int fd = (file != NULL) ? _fileno(file) : -1;
+
+    if (fd == 0) { // stdin
         handle = GetStdHandle(STD_INPUT_HANDLE);
         valid = win_valid_in_flags;
 
-    } else if (file == stdout && file != NULL) {
+    } else if (fd == 1) { // stdout
         handle =  GetStdHandle(STD_OUTPUT_HANDLE);
         valid = win_valid_out_flags;
 
-    } else if (file == stderr && file != NULL) {
+    } else if (fd == 2) { // stderr
         handle =  GetStdHandle(STD_ERROR_HANDLE);
         valid = win_valid_out_flags;
 
