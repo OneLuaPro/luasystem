@@ -60,13 +60,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@master
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup MSVC
         # the 'hishamhm/gh-actions-lua' step requires msvc to build PuC Rio Lua
         # versions on Windows (LuaJIT will be build using MinGW/gcc).
         if: ${{ matrix.toolchain == 'msvc' }}
-        uses: ilammy/msvc-dev-cmd@v1
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1
 
       # - name: install Dependencies analyzer
       #   # action step used for troubleshooting if Windows dll's build
@@ -95,11 +95,11 @@ jobs:
       #     dir \".\\.dependencies\Dependencies.exe\"\n
       #     .\\.dependencies\\Dependencies.exe -help\n
 
-      - uses: hishamhm/gh-actions-lua@master
+      - uses: luarocks/gh-actions-lua@85e2287697275df96334743ac654241a8fd34ab3 # v11
         with:
           luaVersion: ${{ matrix.luaVersion }}
 
-      - uses: hishamhm/gh-actions-luarocks@master
+      - uses: luarocks/gh-actions-luarocks@95d2308a0aff36ad31ebadca493ed14853399842 # v6
         with:
           luaRocksVersion: "3.13.0"
 
@@ -120,10 +120,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Run tests on FreeBSD
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run tests inside FreeBSD VM
-        uses: vmactions/freebsd-vm@v1
+        uses: vmactions/freebsd-vm@83b151f58c6047089f4c80eb5ba2039d158ce093 # v1
         with:
           usesh: true
           prepare: |
@@ -138,10 +139,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Run tests on OpenBSD
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run tests inside OpenBSD VM
-        uses: vmactions/openbsd-vm@v1
+        uses: vmactions/openbsd-vm@e6c68b637a12e83519688d115d57d5b0b53923cd # v1
         with:
           usesh: true
           prepare: |
@@ -156,10 +158,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Run tests on NetBSD
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run tests inside NetBSD VM
-        uses: vmactions/netbsd-vm@v1
+        uses: vmactions/netbsd-vm@00081e82b14bc40114eb97f32b4455306828516b # v1
         with:
           usesh: true
           prepare: |
